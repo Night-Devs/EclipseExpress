@@ -5,7 +5,7 @@ import BaseEntity from './base'
 export class DefaultRoles extends BaseEntity {
   @Column()
   guildID: string
-  @Column()
+  @Column({ default: true })
   enabled: boolean
   @Column()
   roles: string[]

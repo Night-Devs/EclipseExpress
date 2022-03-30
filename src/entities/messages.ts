@@ -1,11 +1,13 @@
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, ObjectID } from 'typeorm'
 import BaseEntity from './base'
 
-@Entity('welcome')
-export class Welcome extends BaseEntity {
+@Entity('messages')
+export class Messages extends BaseEntity {
   @Column()
   guildID: string
   @Column()
+  type: string
+  @Column({ default: true })
   enabled: boolean
   @Column()
   channelID: string

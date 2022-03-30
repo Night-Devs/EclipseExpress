@@ -5,7 +5,7 @@ import BaseEntity from './base'
 export class LevelsServer extends BaseEntity {
   @Column()
   guildID: string
-  @Column()
+  @Column({ default: true })
   enabled: boolean
   @Column()
   onNewLevel: {
@@ -25,6 +25,6 @@ export class LevelsServer extends BaseEntity {
     members: string[]
     channels: string[]
   }
-  @Column()
+  @Column({ default: true })
   transfer: boolean
 }

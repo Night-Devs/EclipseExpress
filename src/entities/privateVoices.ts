@@ -3,10 +3,12 @@ import BaseEntity from './base'
 
 @Entity('privateVoices')
 export class PrivateVoices extends BaseEntity {
+  @Column({ default: true })
+  enabled: boolean
   @Column()
   guildID: string
   @Column()
   channelID: string
-  @Column()
+  @Column({ default: '[+] {{TAG}}' })
   template: string
 }
