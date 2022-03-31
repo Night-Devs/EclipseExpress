@@ -1,4 +1,6 @@
+import { Static } from '@sinclair/typebox'
 import { Column, Entity } from 'typeorm'
+import { messageSchema } from '../schemas'
 import BaseEntity from './base'
 
 @Entity('levelsS')
@@ -10,7 +12,7 @@ export class LevelsServer extends BaseEntity {
   @Column()
   onNewLevel: {
     mode: string[]
-    message: Object
+    message: Static<typeof messageSchema>
     deleteTimeout: number
     reaction: string
   }

@@ -1,7 +1,7 @@
 import { Validator } from 'express-json-validator-middleware'
 import Guilds from '../controllers/guilds'
 import { AuthorizationMiddleware, GuildPermissions } from '../middlewares'
-import { defaultRolesSchema } from '../schemas'
+import { defaultRolesSchema, levelsConfigSchema } from '../schemas'
 import { Router } from '../structures'
 const { validate } = new Validator({})
 
@@ -21,6 +21,19 @@ export default class extends Router {
       AuthorizationMiddleware,
       GuildPermissions('id'),
       Guilds.PatchDefaultRoles,
+    )
+    this.router.get(
+      '/:id/levels/config',
+      AuthorizationMiddleware,
+      GuildPermissions('id'),
+      Guilds.GetLevelsConfig,
+    )
+    this.router.patch(
+      '/:id/levels/config',
+      validate({ body: levelsConfigSchema }),
+      AuthorizationMiddleware,
+      GuildPermissions('id'),
+      Guilds.PatchLevelsConfig,
     )
   }
 }
