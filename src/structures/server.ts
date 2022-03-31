@@ -6,7 +6,7 @@ import Http, { createServer } from 'http'
 import { HttpError } from 'http-errors'
 import { ValidationError } from 'express-json-validator-middleware'
 import path from 'path'
-import { readdirRecursive } from '../utility'
+import { initDataSource, readdirRecursive } from '../utility'
 import { Router } from './router'
 
 declare global {
@@ -81,8 +81,9 @@ export class Server extends EventEmitter {
     return response.status(500).json({ code: 500, message: error.message })
   }
 
-  public start(): void {
+  public async start(): Promise<void> {
     const port = +process.env.PORT || 3000
+    await initDataSource()
     this.registerRoutes()
     this.http.listen(port, '0.0.0.0', () => this.emit('ready'))
   }
