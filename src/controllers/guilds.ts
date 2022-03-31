@@ -1,7 +1,8 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import { getDataSource } from '../utility/database'
-import { Guilds as GuildsEntity } from '../entities'
+import { DefaultRoles, Guilds as GuildsEntity } from '../entities'
 import { In } from 'typeorm'
+import createHttpError from 'http-errors'
 
 export default class Guilds {
   public static async ListGuilds(request: Request, response: Response) {
@@ -26,5 +27,25 @@ export default class Guilds {
         ),
       ),
     )
+  }
+  public static GetDefaultRoles(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ) {
+    const { id } = request.params
+    getDataSource()
+      .getMongoRepository(DefaultRoles)
+      .findOneOrFail({
+        where: {
+          guildID: id,
+        },
+        select: ['enabled', 'roles'],
+      })
+      .then((data) => {
+        delete data.objectId
+        response.send(data)
+      })
+      .catch(() => next(createHttpError(404)))
   }
 }
