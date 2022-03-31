@@ -48,4 +48,26 @@ export default class Guilds {
       })
       .catch(() => next(createHttpError(404)))
   }
+  public static PatchDefaultRoles(
+    request: Request,
+    response: Response,
+    next: NextFunction,
+  ) {
+    const { id } = request.params
+    getDataSource()
+      .getMongoRepository(DefaultRoles)
+      .findOneByOrFail({ guildID: id })
+      .then((data) =>
+        getDataSource()
+          .getMongoRepository(DefaultRoles)
+          .save(Object.assign(data, request.body))
+          .then(() =>
+            response.json({
+              code: 200,
+              message: 'Success',
+            }),
+          ),
+      )
+      .catch((e) => next(createHttpError(404)))
+  }
 }
